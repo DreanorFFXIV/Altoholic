@@ -1,5 +1,7 @@
 # Altoholic
-Everything you need for your alts. Might break randomly while under development
+Everything you need for your alts.
+
+Only includes currencies for now, will add more over time.
 
 ### Preview
 ![](preview.png)
