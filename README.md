@@ -1,5 +1,5 @@
 # Altoholic
-Everything you need for your alts
+Everything you need for your alts. Might break randomly while under development
 
 ### Preview
 ![](preview.png)
