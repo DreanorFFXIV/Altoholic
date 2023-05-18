@@ -25,6 +25,7 @@ public class BattleCurrency
     
     public BattleCurrency()
     {
+        WeeklyCap = string.Empty;
     }
 
     public void Refresh()
