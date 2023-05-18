@@ -28,6 +28,11 @@ public class MainWindow : Window, IDisposable
     public override void Draw()
     {
         ImGui.Spacing();
+        
+        ImGui.BeginChild("ScrollableRegion", new Vector2(0, 0), true, ImGuiWindowFlags.HorizontalScrollbar);
+
         CurrencyWindow.Draw(CharacterContainers);
+        
+        ImGui.EndChild();
     }
 }

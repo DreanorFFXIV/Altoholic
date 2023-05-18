@@ -7,7 +7,7 @@
     <Description>A overview of all your alts</Description>
     <Copyright>(c) 2023 DreanorFFXIV</Copyright>
     <PackageProjectUrl>https://github.com/DreanorFFXIV/Altoholic</PackageProjectUrl>
-    <PackageVersion>1.0.0.1</PackageVersion>
+    <PackageVersion>1.1.0.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>

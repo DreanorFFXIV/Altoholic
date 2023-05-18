@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Altoholic.Data.Currency;
+using Newtonsoft.Json;
 
 namespace Altoholic.Data;
 

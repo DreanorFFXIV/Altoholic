@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Altoholic.Data;
 using Altoholic.Data.Currency;
 using ImGuiNET;
@@ -13,52 +14,70 @@ public class CurrencyWindow : BaseWindow
         {
             if (ImGui.TreeNode("Common"))
             {
-                DrawCommon(characterContainers);
+                DrawRowsVertical<CommonCurrency>(characterContainers, nameof(CharacterContainer.Currencies), nameof(CharacterContainer.Currencies.Common));
                 ImGui.TreePop();
             }
 
             if (ImGui.TreeNode("Battle"))
             {
-                DrawBattle(characterContainers);
+                DrawRowsVertical<BattleCurrency>(characterContainers, nameof(CharacterContainer.Currencies), nameof(CharacterContainer.Currencies.Battle));
                 ImGui.TreePop();
             }
 
             if (ImGui.TreeNode("Other"))
             {
+                DrawRowsVertical<OtherCurrency>(characterContainers, nameof(CharacterContainer.Currencies), nameof(CharacterContainer.Currencies.Other));
                 ImGui.TreePop();
             }
-
+ 
             if (ImGui.TreeNode("Tribal"))
             {
+                DrawRowsVertical<TribalCurrency>(characterContainers, nameof(CharacterContainer.Currencies), nameof(CharacterContainer.Currencies.Tribal));
                 ImGui.TreePop();
             }
-
+   
             ImGui.TreePop();
         }
     }
-
-    private static void DrawBattle(List<CharacterContainer> characterContainers)
+    
+    private static void DrawRowsHorizontal<T>(List<CharacterContainer> characterContainers, string mainProp, string subProp)
     {
-        DrawTable<BattleCurrency>();
+        DrawTableHorizontal<T>();
         foreach (var character in characterContainers)
         {
             ImGui.TableNextColumn();
             ImGui.Text(character.Name);
+ 
+            var prop = character.GetType().GetProperty(mainProp);
+            var obj = prop?.GetValue(character, null)
+                ?.GetType().GetProperty(subProp)?.GetValue(prop.GetValue(character, null), null);
 
-            DrawRows<BattleCurrency>(character.Currencies.Battle);
+            DrawRows<T>(obj);
         }
         ImGui.EndTable();
     }
-
-    private static void DrawCommon(List<CharacterContainer> characterContainers)
+    
+    private static void DrawRowsVertical<T>(List<CharacterContainer> characterContainers, string mainProp, string subProp)
     {
-        DrawTable<CommonCurrency>();
-        foreach (var character in characterContainers)
+        DrawTableVertical<T>(characterContainers);
+        int count = 0;
+        foreach (var p in typeof(T).GetProperties())
         {
             ImGui.TableNextColumn();
-            ImGui.Text(character.Name);
+            ImGui.Text(p.Name);
+ 
+            foreach (var character in characterContainers)
+            {
+                var prop = character.GetType().GetProperty(mainProp);
+                var obj = prop?.GetValue(character, null)
+                    ?.GetType().GetProperty(subProp)?.GetValue(prop.GetValue(character, null), null);
 
-            DrawRows<CommonCurrency>(character.Currencies.Common);
+                ImGui.TableNextColumn();
+                ImGui.Text( typeof(T).GetProperties()[count].GetValue(obj).ToString()); 
+            }
+
+            count++;
+            ImGui.TableNextRow(); 
         }
         ImGui.EndTable();
     }

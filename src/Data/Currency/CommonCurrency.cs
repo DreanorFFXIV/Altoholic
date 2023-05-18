@@ -1,27 +1,21 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace Altoholic.Data.Currency;
 
 public class CommonCurrency
 {
-    private const uint _gilId = 000001;
-    private const uint _stormId = 000020;
-    private const uint _serpentId = 000021;
-    private const uint _flameId = 000022;
-    private const uint _mgp = 000029;
-    private const uint _ventures = 021072;
+    public string Gil { get; set; } = string.Empty;
+
+    public string StormSeals { get; set; } = string.Empty;
     
-    public int Gil { get; set; }
+    public string SerpentSeals { get; set; } = string.Empty;
 
-    public int StormSeals { get; set; }
-    
-    public int SerpentSeals { get; set; }
+    public string FlameSeals { get; set; } = string.Empty;
 
-    public int FlameSeals { get; set; }
+    public string Mgp { get; set; } = string.Empty;
 
-    public int Mgp { get; set; }
-
-    public int Ventures { get; set; }
+    public string Ventures { get; set; } = string.Empty;
     
     public CommonCurrency()
     {
@@ -31,12 +25,12 @@ public class CommonCurrency
     {
         unsafe
         {
-            Gil = InventoryManager.Instance()->GetInventoryItemCount(_gilId);
-            StormSeals = InventoryManager.Instance()->GetInventoryItemCount(_stormId);
-            SerpentSeals = InventoryManager.Instance()->GetInventoryItemCount(_serpentId);
-            FlameSeals = InventoryManager.Instance()->GetInventoryItemCount(_flameId);
-            Ventures = InventoryManager.Instance()->GetInventoryItemCount(_ventures);
-            Mgp = InventoryManager.Instance()->GetInventoryItemCount(_mgp);
+            Gil = InventoryManager.Instance()->GetInventoryItemCount(000001).ToString("N0");
+            StormSeals = InventoryManager.Instance()->GetInventoryItemCount(000020).ToString("N0");
+            SerpentSeals = InventoryManager.Instance()->GetInventoryItemCount(000021).ToString("N0");
+            FlameSeals = InventoryManager.Instance()->GetInventoryItemCount(000022).ToString("N0");
+            Ventures = InventoryManager.Instance()->GetInventoryItemCount(021072).ToString("N0");
+            Mgp = InventoryManager.Instance()->GetInventoryItemCount(000029).ToString("N0");
         }
     }
 }
