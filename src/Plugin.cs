@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Altoholic.Data;
 using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Altoholic.Windows;
 using Dalamud.Game.ClientState;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 
 namespace Altoholic
 {
@@ -14,83 +16,80 @@ namespace Altoholic
         public string Name => "Altoholic";
         private const string CommandName = "/alt";
 
-        private DalamudPluginInterface PluginInterface { get; init; }
-        private ClientState ClientState { get; init; }
-        private CommandManager CommandManager { get; init; }
-        public Configuration Configuration { get; init; }
-        public WindowSystem WindowSystem = new("Altoholic");
-
-        private MainWindow MainWindow { get; init; }
+        private DalamudPluginInterface PluginInterface { get; }
+        private ClientState ClientState { get; }
+        private CommandManager CommandManager { get; }
+        private Configuration Configuration { get; }
+        private WindowSystem WindowSystem = new("Altoholic");
+        private MainWindow MainWindow { get; }
 
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager,
             [RequiredVersion("1.0")] ClientState clientState)
         {
-            this.PluginInterface = pluginInterface;
-            this.CommandManager = commandManager;
-            this.ClientState = clientState;
+            PluginInterface = pluginInterface;
+            CommandManager = commandManager;
+            ClientState = clientState;
 
-            this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            this.Configuration.Initialize(this.PluginInterface);
+            Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            Configuration.Initialize(PluginInterface);
 
             MainWindow = new MainWindow();
 
             WindowSystem.AddWindow(MainWindow);
 
-            this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
+            CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Opens the Altoholic View"
             });
 
-            this.PluginInterface.UiBuilder.Draw += DrawUI;
+            PluginInterface.UiBuilder.Draw += DrawUI;
         }
 
         public void Dispose()
         {
-            this.WindowSystem.RemoveAllWindows();
+            WindowSystem.RemoveAllWindows();
             
             MainWindow.Dispose();
             
-            this.CommandManager.RemoveHandler(CommandName);
+            CommandManager.RemoveHandler(CommandName);
         }
 
         private void OnCommand(string command, string args)
         {
-            MainWindow.CharacterData = LoadData();
+            MainWindow.CharacterContainers = LoadData();
             MainWindow.IsOpen = true;
         }
  
         private void DrawUI()
         {
-            this.WindowSystem.Draw();
+            WindowSystem.Draw();
         }
 
-        private List<CharacterData> LoadData()
+        private List<CharacterContainer> LoadData()
         {
             Configuration.Load();
-            
-            var characterData = Configuration.CharacterData;
 
+            var characterContainers = Configuration.CharacterContainers ?? new List<CharacterContainer>(); //null on new install
             if (ClientState.LocalPlayer != null)
             {
                 var loggedCharacter = $"{ClientState.LocalPlayer.Name.ToString()} @{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                var existingCharacter = characterData.FirstOrDefault(x => x.CharacterName == loggedCharacter);
+                var existingCharacter = characterContainers.FirstOrDefault(x => x.Name == loggedCharacter);
                 if (existingCharacter != null)
                 {
-                    existingCharacter.Refresh();
+                    existingCharacter.Reload(); 
                 }
-                else
+                else 
                 {
-                    characterData.Add(new CharacterData(loggedCharacter));
+                    characterContainers.Add(new CharacterContainer(loggedCharacter));
                 }
             }
 
-            Configuration.CharacterData = characterData;
+            Configuration.CharacterContainers = characterContainers;
             Configuration.Save();
-            
-            return characterData;
+            return characterContainers;
         }
     }
 }

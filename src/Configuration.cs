@@ -2,6 +2,7 @@
 using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
+using Altoholic.Data;
 
 namespace Altoholic
 {
@@ -13,21 +14,21 @@ namespace Altoholic
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;
 
-        public List<CharacterData> CharacterData { get; set; }
+        public List<CharacterContainer> CharacterContainers { get; set; }
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            this.PluginInterface = pluginInterface;
+            PluginInterface = pluginInterface;
         }
 
         public void Save()
         { 
-            this.PluginInterface!.SavePluginConfig(this);
+            PluginInterface!.SavePluginConfig(this);
         }
 
         public void Load()
         {
-            this.PluginInterface!.GetPluginConfig();
+            PluginInterface!.GetPluginConfig();
         }
     }
 }
