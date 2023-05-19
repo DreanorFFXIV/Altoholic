@@ -5,6 +5,7 @@ using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Altoholic.Windows;
+using Dalamud.Data;
 using Dalamud.Game.ClientState;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
@@ -35,14 +36,13 @@ namespace Altoholic
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
 
-            MainWindow = new MainWindow();
-
-            WindowSystem.AddWindow(MainWindow);
-
             CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Opens the Altoholic View"
             });
+            
+            MainWindow = new MainWindow(commandManager);
+            WindowSystem.AddWindow(MainWindow);
 
             PluginInterface.UiBuilder.Draw += DrawUI;
         }
@@ -74,7 +74,7 @@ namespace Altoholic
             var characterContainers = Configuration.CharacterContainers ?? new List<CharacterContainer>(); //null on new install
             if (ClientState.LocalPlayer != null)
             {
-                var loggedCharacter = $"{ClientState.LocalPlayer.Name.ToString()} @{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
+                var loggedCharacter = $"{ClientState.LocalPlayer.Name.ToString()}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
                 var existingCharacter = characterContainers.FirstOrDefault(x => x.Name == loggedCharacter);
                 if (existingCharacter != null)
@@ -82,7 +82,7 @@ namespace Altoholic
                     existingCharacter.Reload(); 
                 }
                 else 
-                {
+                {  
                     characterContainers.Add(new CharacterContainer(loggedCharacter));
                 }
             }

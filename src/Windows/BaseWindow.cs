@@ -1,14 +1,59 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Altoholic.Data;
-using Dalamud.Logging;
 using ImGuiNET;
 
 namespace Altoholic.Windows;
 
 public abstract class BaseWindow
 {
-    public static void DrawRows<T>(object obj)
+    protected static void DrawRowsHorizontal<T>(List<CharacterContainer> characterContainers, string mainProp, string subProp)
+    {
+        DrawTableHorizontal<T>();
+        foreach (var character in characterContainers)
+        {
+            ImGui.TableNextColumn();
+            ImGui.Text(character.Name);
+ 
+            var prop = character.GetType().GetProperty(mainProp);
+            object? obj = string.IsNullOrWhiteSpace(subProp) 
+                ? prop?.GetValue(character, null) 
+                : prop?.GetValue(character, null)?.GetType().GetProperty(subProp)?.GetValue(prop.GetValue(character, null), null);
+
+            DrawRows<T>(obj);
+        }
+        ImGui.EndTable();
+    }
+
+    protected static void DrawRowsVertical<T>(List<CharacterContainer> characterContainers, string mainProp, string subProp)
+    {
+        DrawTableVertical<T>(characterContainers);
+        int count = 0;
+        foreach (var p in typeof(T).GetProperties())
+        {
+            ImGui.TableNextColumn();
+            ImGui.Text(p.Name);
+ 
+            foreach (var character in characterContainers)
+            {
+                var prop = character.GetType().GetProperty(mainProp);
+                object? obj = string.IsNullOrWhiteSpace(subProp) 
+                    ? prop?.GetValue(character, null) 
+                    : prop?.GetValue(character, null)?.GetType().GetProperty(subProp)?.GetValue(prop.GetValue(character, null), null);
+
+
+                ImGui.TableNextColumn();
+                ImGui.Text( typeof(T).GetProperties()[count].GetValue(obj).ToString()); 
+            }
+
+            count++;
+            ImGui.TableNextRow(); 
+        }
+        ImGui.EndTable();
+    }
+
+    protected static void DrawRows<T>(object obj)
     {
         foreach (PropertyInfo p in typeof(T).GetProperties())
         {
@@ -17,13 +62,13 @@ public abstract class BaseWindow
         }
         ImGui.TableNextRow();
     }
-
-    public static void DrawTableHorizontal<T>()
+  
+    protected static void DrawTableHorizontal<T>(string firstColumn = "Character Name")
     {
         int size = typeof(T).GetProperties().Length + 1;
         if (ImGui.BeginTable("table", size, ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.BordersInner))
         {
-            ImGui.TableSetupColumn("Character Name", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn(firstColumn, ImGuiTableColumnFlags.WidthFixed);
 
             foreach (PropertyInfo p in typeof(T).GetProperties())
             {
@@ -33,8 +78,8 @@ public abstract class BaseWindow
             ImGui.TableNextRow();
         }
     }
-    
-    public static void DrawTableVertical<T>(List<CharacterContainer> characterContainers)
+
+    protected static void DrawTableVertical<T>(List<CharacterContainer> characterContainers)
     {
         int size = characterContainers.Count + 1;
         if (ImGui.BeginTable("table", size, ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.BordersInner))

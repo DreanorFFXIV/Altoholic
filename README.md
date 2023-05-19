@@ -1,7 +1,9 @@
 # Altoholic
 Everything you need for your alts.
 
-Only includes currencies for now, will add more over time.
+Features
+* Displays all currencies for all characters
+* Relog to your alt characters (Requires [Autoretainer](https://puni.sh/plugin/AutoRetainer))
 
 ### Preview
 ![](preview.png)
