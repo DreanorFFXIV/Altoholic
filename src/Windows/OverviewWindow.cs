@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Altoholic.Data;
-using Altoholic.Data.Character;
 using Dalamud.Game.Command;
-using Dalamud.Logging;
 using ImGuiNET;
 
 namespace Altoholic.Windows;

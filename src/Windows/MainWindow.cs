@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Altoholic.Data;
-using Altoholic.Data.Currency;
-using Dalamud.Data;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
 
 namespace Altoholic.Windows;
 
@@ -35,11 +31,12 @@ public class MainWindow : Window, IDisposable
     public override void Draw()
     {
         ImGui.Spacing();
-        
+         
         ImGui.BeginChild("ScrollableRegion", new Vector2(0, 0), true, ImGuiWindowFlags.HorizontalScrollbar);
         
         OverviewWindow.Draw(CharacterContainers, _commandManager);
         CurrencyWindow.Draw(CharacterContainers);
+        CollectionWindow.Draw(CharacterContainers);
         
         ImGui.EndChild();
     }

@@ -1,7 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Lumina.Excel.GeneratedSheets;
 
-namespace Altoholic.Data.Character;
+namespace Altoholic.Data;
 
 public class Overview
 {

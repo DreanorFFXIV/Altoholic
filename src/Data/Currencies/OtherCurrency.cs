@@ -1,7 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 
-namespace Altoholic.Data.Currency;
+namespace Altoholic.Data.Currencies;
 
 public class OtherCurrency
 {

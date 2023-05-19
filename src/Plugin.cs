@@ -20,6 +20,7 @@ namespace Altoholic
         private DalamudPluginInterface PluginInterface { get; }
         private ClientState ClientState { get; }
         private CommandManager CommandManager { get; }
+        private DataManager Dm { get; }
         private Configuration Configuration { get; }
         private WindowSystem WindowSystem = new("Altoholic");
         private MainWindow MainWindow { get; }
@@ -27,15 +28,25 @@ namespace Altoholic
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager,
-            [RequiredVersion("1.0")] ClientState clientState)
+            [RequiredVersion("1.0")] ClientState clientState,
+            [RequiredVersion("1.0")] DataManager dm)
         {
             PluginInterface = pluginInterface;
             CommandManager = commandManager;
+            Dm = dm;
             ClientState = clientState;
 
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
-
+            
+            //reset old versions
+            if (Configuration.Version == 0)
+            {
+                Configuration.CharacterContainers = new List<CharacterContainer>();
+                Configuration.Version = 1;
+                Configuration.Save();
+            }
+            
             CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Opens the Altoholic View"
@@ -83,7 +94,7 @@ namespace Altoholic
                 }
                 else 
                 {  
-                    characterContainers.Add(new CharacterContainer(loggedCharacter));
+                    characterContainers.Add(new CharacterContainer(loggedCharacter, Dm));
                 }
             }
 

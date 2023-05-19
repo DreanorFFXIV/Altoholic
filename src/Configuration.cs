@@ -3,13 +3,14 @@ using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
 using Altoholic.Data;
+using Dalamud.Logging;
 
 namespace Altoholic
 {
     [Serializable]
     public class Configuration : IPluginConfiguration
     {
-        public int Version { get; set; } = 0;
+        public int Version { get; set; } = 1;
 
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

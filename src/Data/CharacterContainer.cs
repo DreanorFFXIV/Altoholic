@@ -1,6 +1,6 @@
-﻿using Altoholic.Data.Character;
-using Altoholic.Data.Currency;
-using Altoholic.Windows;
+﻿using Altoholic.Data.Collections;
+using Altoholic.Data.Currencies;
+using Dalamud.Data;
 using Newtonsoft.Json;
 
 namespace Altoholic.Data;
@@ -9,29 +9,33 @@ public class CharacterContainer
 {
     public string Name { get; }
     
-    public Currencies Currencies { get; }
+    public CurrencyController Currency { get; }
     public Overview Overview { get; }
+    public CollectionController Collection { get; }
 
     [JsonConstructor]
-    public CharacterContainer(string name, Currencies currencies, Overview overview)
+    public CharacterContainer(string name, CurrencyController currency, Overview overview, CollectionController collection)
     {
         Name = name;
-        Currencies = currencies;
+        Currency = currency;
         Overview = overview;
-        Overview.Gil = currencies.Common.Gil;
+        Overview.Gil = currency.Common.Gil;
+        Collection = collection;
     }
 
-    public CharacterContainer(string name)
+    public CharacterContainer(string name, DataManager dataManager)
     {
         Name = name;
-        Currencies = new Currencies();
-        Overview = new Overview { Gil = Currencies.Common.Gil };
-        Reload();
+        Currency = new CurrencyController();
+        Overview = new Overview { Gil = Currency.Common.Gil };
+        Collection = new CollectionController(dataManager);
+        Reload(); 
     }
 
     public void Reload()
     {
-        Currencies.Refresh();
+        Currency.Refresh();
         Overview.Refresh();
+        Collection.Refresh();
     }
 }

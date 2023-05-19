@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace Altoholic.Data.Currency;
+namespace Altoholic.Data.Currencies;
 
-public class Currencies
+public class CurrencyController
 {
     public CommonCurrency Common { get; }
     public BattleCurrency Battle { get; }
@@ -10,7 +10,7 @@ public class Currencies
     public TribalCurrency Tribal { get; }
 
     [JsonConstructor]
-    public Currencies(CommonCurrency common, BattleCurrency battle, OtherCurrency other, TribalCurrency tribal)
+    public CurrencyController(CommonCurrency common, BattleCurrency battle, OtherCurrency other, TribalCurrency tribal)
     {
         Common = common;
         Battle = battle;
@@ -18,7 +18,7 @@ public class Currencies
         Tribal = tribal;
     }
      
-    public Currencies()
+    public CurrencyController()
     {
         Common = new CommonCurrency();
         Battle = new BattleCurrency();

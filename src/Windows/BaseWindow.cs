@@ -28,7 +28,7 @@ public abstract class BaseWindow
 
     protected static void DrawRowsVertical<T>(List<CharacterContainer> characterContainers, string mainProp, string subProp)
     {
-        DrawTableVertical<T>(characterContainers);
+        DrawTableVertical(characterContainers);
         int count = 0;
         foreach (var p in typeof(T).GetProperties())
         {
@@ -79,7 +79,7 @@ public abstract class BaseWindow
         }
     }
 
-    protected static void DrawTableVertical<T>(List<CharacterContainer> characterContainers)
+    protected static void DrawTableVertical(List<CharacterContainer> characterContainers)
     {
         int size = characterContainers.Count + 1;
         if (ImGui.BeginTable("table", size, ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.BordersInner))

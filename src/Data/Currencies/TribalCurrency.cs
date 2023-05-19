@@ -1,6 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 
-namespace Altoholic.Data.Currency;
+namespace Altoholic.Data.Currencies;
 
 public class TribalCurrency
 {
