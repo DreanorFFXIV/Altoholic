@@ -2,10 +2,18 @@
 Everything you need for your alts.
 
 Features
-* Displays all currencies for all characters
-* Displays all unlocked Mounts
-* Displays all unlocked Minons
 * Relog to your alt characters (Requires [Autoretainer](https://puni.sh/plugin/AutoRetainer))
+* Currencies for all characters
+  * Common
+  * Battle
+  * Other
+  * Tribal
+* Collections for all characters
+  * Mounts
+  * Minions
+  * Emotes
+  * Triple Triad Cards
+  * Orchestrion Rolls
 
 ### Preview
 ![](preview.png)

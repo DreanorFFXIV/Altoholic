@@ -40,10 +40,10 @@ namespace Altoholic
             Configuration.Initialize(PluginInterface);
             
             //reset old versions
-            if (Configuration.Version == 0)
+            if (Configuration.Version != 2)
             {
                 Configuration.CharacterContainers = new List<CharacterContainer>();
-                Configuration.Version = 1;
+                Configuration.Version = 2;
                 Configuration.Save();
             }
             
