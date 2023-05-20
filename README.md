@@ -3,12 +3,13 @@ Everything you need for your alts.
 
 Features
 * Relog to your alt characters (Requires [Autoretainer](https://puni.sh/plugin/AutoRetainer))
-* Currencies for all characters
+* Displays all unlocked Jobs
+* Displays Currencies
   * Common
   * Battle
   * Other
   * Tribal
-* Collections for all characters
+* Displays Collections
   * Mounts
   * Minions
   * Emotes
