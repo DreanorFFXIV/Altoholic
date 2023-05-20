@@ -9,7 +9,7 @@ namespace Altoholic
     [Serializable]
     public class Configuration : IPluginConfiguration
     {
-        public int Version { get; set; } = 2;
+        public int Version { get; set; } = 3;
 
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

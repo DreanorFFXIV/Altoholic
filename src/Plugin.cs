@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Altoholic.Data;
 using Dalamud.Game.Command;
@@ -7,8 +8,11 @@ using Dalamud.Plugin;
 using Altoholic.Windows;
 using Dalamud.Data;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using Lumina.Excel.GeneratedSheets;
 
 namespace Altoholic
 {
@@ -39,11 +43,11 @@ namespace Altoholic
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
             
-            //reset old versions
-            if (Configuration.Version != 2)
+            //reset old versions 
+            if (Configuration.Version != 3)
             {
                 Configuration.CharacterContainers = new List<CharacterContainer>();
-                Configuration.Version = 2;
+                Configuration.Version = 3;
                 Configuration.Save();
             }
             
@@ -90,7 +94,7 @@ namespace Altoholic
                 var existingCharacter = characterContainers.FirstOrDefault(x => x.Name == loggedCharacter);
                 if (existingCharacter != null)
                 {
-                    existingCharacter.Reload(); 
+                    existingCharacter.Reload(Dm); 
                 }
                 else 
                 {  
