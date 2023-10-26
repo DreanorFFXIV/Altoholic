@@ -2,6 +2,7 @@
 using System.Linq;
 using Dalamud.Data;
 using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace Altoholic.Data;
 
 public class CollectionContainer
 {
-    private readonly DataManager _dataManager;
+    private readonly IDataManager _dataManager;
 
     public List<string> UnlockedMounts { get; private set; } = new List<string>();
     public List<string> UnlockedMinions { get; private set; } = new List<string>();
@@ -23,7 +24,7 @@ public class CollectionContainer
     {
     }
  
-    public CollectionContainer(DataManager dataManager)
+    public CollectionContainer(IDataManager dataManager)
     {
         _dataManager = dataManager;
         Refresh();

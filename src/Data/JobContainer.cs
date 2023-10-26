@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Data;
 using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using Lumina.Excel.GeneratedSheets;
@@ -11,7 +12,7 @@ namespace Altoholic.Data;
 
 public class JobContainer
 {
-    private DataManager _dataManager;
+    private IDataManager _dataManager;
 
     public List<Job> Jobs { get; private set; } = new List<Job>();
 
@@ -21,7 +22,7 @@ public class JobContainer
     private List<uint> _gather = new List<uint>{16, 17, 18};
     private List<uint> _craft = new List<uint>{8, 9, 10, 11, 12, 13, 14, 15};
 
-    public JobContainer(DataManager dataManager)
+    public JobContainer(IDataManager dataManager)
     {
         _dataManager = dataManager;
     }

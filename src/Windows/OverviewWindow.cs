@@ -2,13 +2,14 @@
 using System.Linq;
 using Altoholic.Data;
 using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using ImGuiNET;
 
 namespace Altoholic.Windows;
 
 public class OverviewWindow : BaseWindow
 {
-    public static void Draw(List<CharacterContainer> characterContainers, CommandManager commandManager)
+    public static void Draw(List<CharacterContainer> characterContainers, ICommandManager commandManager)
     {
         if (ImGui.TreeNode("Overview"))
         {

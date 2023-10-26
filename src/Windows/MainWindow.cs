@@ -4,6 +4,7 @@ using System.Numerics;
 using Altoholic.Data;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
+using Dalamud.Plugin.Services;
 using ImGuiNET;
 
 namespace Altoholic.Windows;
@@ -12,8 +13,8 @@ public class MainWindow : Window, IDisposable
 {
     public List<CharacterContainer> CharacterContainers { get; set; }
 
-    private CommandManager _commandManager;
-    public MainWindow(CommandManager commandManager) 
+    private ICommandManager _commandManager;
+    public MainWindow(ICommandManager commandManager) 
         : base("Altoholic", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         _commandManager = commandManager;

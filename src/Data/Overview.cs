@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 
 namespace Altoholic.Data;
 
@@ -16,8 +17,9 @@ public class Overview
     
     public void Refresh()
     {
-        unsafe
+        unsafe 
         {
+            Gil = InventoryManager.Instance()->GetInventoryItemCount(000001).ToString("N0");
             Mounts = PlayerState.Instance()->NumOwnedMounts.ToString();
             Commendations = PlayerState.Instance()->PlayerCommendations.ToString("N0");
         }

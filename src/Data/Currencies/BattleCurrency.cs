@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace Altoholic.Data.Currencies;
 

@@ -1,5 +1,6 @@
 ﻿using Altoholic.Data.Currencies;
 using Dalamud.Data;
+using Dalamud.Plugin.Services;
 using Newtonsoft.Json;
 
 namespace Altoholic.Data;
@@ -24,7 +25,7 @@ public class CharacterContainer
         JobContainer = jobContainer;
     }
  
-    public CharacterContainer(string name, DataManager dataManager)
+    public CharacterContainer(string name, IDataManager dataManager)
     {
         Name = name;
         Currency = new CurrencyController();
@@ -33,7 +34,7 @@ public class CharacterContainer
         Reload(dataManager); 
     }
 
-    public void Reload(DataManager dataManager)
+    public void Reload(IDataManager dataManager)
     {
         Collection = new CollectionContainer(dataManager);
         JobContainer = new JobContainer(dataManager);
