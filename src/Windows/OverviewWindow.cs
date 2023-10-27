@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Altoholic.Data;
 using Dalamud.Game.Command;
+using Dalamud.Logging;
 using Dalamud.Plugin.Services;
 using ImGuiNET;
 
@@ -24,7 +27,8 @@ public class OverviewWindow : BaseWindow
 
                 DrawRows<Overview>(character.Overview);
             }
-            ImGui.EndTable();
+
+            DrawSummaryLine(characterContainers);
 
             if (ImGui.TreeNode("Jobs"))
             {
@@ -58,5 +62,14 @@ public class OverviewWindow : BaseWindow
             
             ImGui.TreePop();
         }
+    }
+
+    private static void DrawSummaryLine(List<CharacterContainer> characterContainers)
+    {
+        ImGui.TableNextColumn();
+        ImGui.Text("Total Gil:");
+        ImGui.TableNextColumn();
+        ImGui.Text(characterContainers.Sum(x => long.Parse(x.Currency.Common.Gil.Replace(",", "").Replace(".", ""))).ToString("N0"));
+        ImGui.EndTable();
     }
 }

@@ -5,17 +5,17 @@ namespace Altoholic.Data.Currencies;
 
 public class BattleCurrency
 {
-    public string Poetics { get; private set; } = string.Empty;
-    public string Astronomy { get; private set; } = string.Empty;
-    public string Causality { get; private set; } = string.Empty;
-    public string WeeklyCap { get; private set; } = string.Empty;
-    public string WolfMark { get; private set; } = string.Empty;
-    public string TrophyCrystal { get; private set; } = string.Empty;
-    public string Allied { get; private set; } = string.Empty;
-    public string Centurio { get; private set; } = string.Empty;
-    public string Nuts { get; private set; } = string.Empty;
-    public string Gemstone { get; private set; } = string.Empty;
-    
+    public string Poetics { get; set; } = string.Empty;
+    public string Astronomy { get; set; } = string.Empty;
+    public string Causality { get; set; } = string.Empty;
+    public string WeeklyCap { get; set; } = string.Empty;
+    public string WolfMark { get; set; } = string.Empty;
+    public string TrophyCrystal { get; set; } = string.Empty;
+    public string Allied { get; set; } = string.Empty;
+    public string Centurio { get; set; } = string.Empty;
+    public string Nuts { get; set; } = string.Empty;
+    public string Gemstone { get; set; } = string.Empty;
+
     public BattleCurrency()
     {
     }

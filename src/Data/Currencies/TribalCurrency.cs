@@ -4,23 +4,23 @@ namespace Altoholic.Data.Currencies;
 
 public class TribalCurrency
 {
-    public string Amaljaa { get; private set; } = string.Empty;
-    public string Sylph { get; private set; } = string.Empty;
-    public string Kobold { get; private set; } = string.Empty;
-    public string Sahagin { get; private set; } = string.Empty;
-    public string Ixali { get; private set; } = string.Empty;
-    public string Vanu { get; private set; } = string.Empty;
-    public string Vath { get; private set; } = string.Empty;
-    public string Moogle { get; private set; } = string.Empty;
-    public string Kojin { get; private set; } = string.Empty;
-    public string Ananta { get; private set; } = string.Empty;
-    public string Namazu { get; private set; } = string.Empty;
-    public string Pixie { get; private set; } = string.Empty;
-    public string Qitari { get; private set; } = string.Empty;
-    public string Dwarf { get; private set; } = string.Empty;
-    public string Arkasodara { get; private set; } = string.Empty;
-    public string Omicron { get; private set; } = string.Empty;
-    public string Loporrrit { get; private set; } = string.Empty;
+    public string Amaljaa { get; set; } = string.Empty;
+    public string Sylph { get; set; } = string.Empty;
+    public string Kobold { get; set; } = string.Empty;
+    public string Sahagin { get; set; } = string.Empty;
+    public string Ixali { get; set; } = string.Empty;
+    public string Vanu { get; set; } = string.Empty;
+    public string Vath { get; set; } = string.Empty;
+    public string Moogle { get; set; } = string.Empty;
+    public string Kojin { get; set; } = string.Empty;
+    public string Ananta { get; set; } = string.Empty;
+    public string Namazu { get; set; } = string.Empty;
+    public string Pixie { get; set; } = string.Empty;
+    public string Qitari { get; set; } = string.Empty;
+    public string Dwarf { get; set; } = string.Empty;
+    public string Arkasodara { get; set; } = string.Empty;
+    public string Omicron { get; set; } = string.Empty;
+    public string Loporrrit { get; set; } = string.Empty;
 
     public TribalCurrency()
     {

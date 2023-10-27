@@ -4,11 +4,11 @@ namespace Altoholic.Data.Currencies;
 
 public class OtherCurrency
 {
-    public string WhiteCrafterScrips { get; private set; } = string.Empty;
-    public string PurpleCrafterScrips { get; private set; } = string.Empty;
-    public string WhiteGathererScrips { get; private set; } = string.Empty;
-    public string PurpleGathererScrips { get; private set; } = string.Empty;
-    public string SkybuilderScrips { get; private set; } = string.Empty;
+    public string WhiteCrafterScrips { get; set; } = string.Empty;
+    public string PurpleCrafterScrips { get; set; } = string.Empty;
+    public string WhiteGathererScrips { get; set; } = string.Empty;
+    public string PurpleGathererScrips { get; set; } = string.Empty;
+    public string SkybuilderScrips { get; set; } = string.Empty;
 
     public OtherCurrency()
     {

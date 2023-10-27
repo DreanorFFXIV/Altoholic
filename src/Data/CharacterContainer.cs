@@ -1,5 +1,6 @@
 ﻿using Altoholic.Data.Currencies;
 using Dalamud.Data;
+using Dalamud.Logging;
 using Dalamud.Plugin.Services;
 using Newtonsoft.Json;
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Dalamud.Logging;
+using Newtonsoft.Json;
 
 namespace Altoholic.Data.Currencies;
 
@@ -24,7 +25,6 @@ public class CurrencyController
         Battle = new BattleCurrency();
         Other = new OtherCurrency();
         Tribal = new TribalCurrency();
-        Refresh();
     }
 
     public void Refresh()

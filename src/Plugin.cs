@@ -20,7 +20,7 @@ namespace Altoholic
     public sealed class Plugin : IDalamudPlugin
     {
         public string Name => "Altoholic";
-        private const string CommandName = "/alt";
+        private const string CommandName = "/palt";
 
         private DalamudPluginInterface PluginInterface { get; }
         private IClientState ClientState { get; }
@@ -43,15 +43,7 @@ namespace Altoholic
 
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
-            
-            //reset old versions 
-            if (Configuration.Version != 3)
-            {
-                Configuration.CharacterContainers = new List<CharacterContainer>();
-                Configuration.Version = 3;
-                Configuration.Save();
-            }
-            
+       
             CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Opens the Altoholic View"
@@ -65,7 +57,7 @@ namespace Altoholic
 
         public void Dispose()
         {
-            //Configuration.Save();
+            Configuration.Save();
             WindowSystem.RemoveAllWindows();
             
             MainWindow.Dispose();
@@ -76,7 +68,7 @@ namespace Altoholic
         private void OnCommand(string command, string args)
         {
             MainWindow.CharacterContainers = LoadData();
-          //  MainWindow.IsOpen = true;
+            MainWindow.IsOpen = true;
         }
  
         private void DrawUI()
@@ -86,11 +78,7 @@ namespace Altoholic
 
         private List<CharacterContainer> LoadData()
         {
-            PluginLog.Log("LoadData()");
-            Configuration.Load();
-
             var characterContainers = Configuration.CharacterContainers ?? new List<CharacterContainer>(); //null on new install
-           /*
             if (ClientState.LocalPlayer != null)
             {
                 var loggedCharacter = $"{ClientState.LocalPlayer.Name.ToString()}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
@@ -107,13 +95,9 @@ namespace Altoholic
                     characterContainers.Add(new CharacterContainer(loggedCharacter, Dm));
                 }
             }
-*/
-           foreach (var a in characterContainers)
-           {
-               PluginLog.Log(a.Currency.Battle.Poetics);
-           }
+
             Configuration.CharacterContainers = characterContainers;
-            //Configuration.Save();
+            Configuration.Save();
             return characterContainers;
         }
     }

@@ -25,10 +25,5 @@ namespace Altoholic
         { 
             PluginInterface!.SavePluginConfig(this);
         }
-
-        public void Load()
-        {
-            PluginInterface!.GetPluginConfig();
-        }
     }
 }
