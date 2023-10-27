@@ -14,52 +14,47 @@ public class OverviewWindow : BaseWindow
 {
     public static void Draw(List<CharacterContainer> characterContainers, ICommandManager commandManager)
     {
-        if (ImGui.TreeNode("Overview"))
+        DrawTableHorizontal<Overview>("Relog");
+        foreach (var character in characterContainers)
         {
-            DrawTableHorizontal<Overview>("Relog");
-            foreach (var character in characterContainers)
+            ImGui.TableNextColumn();
+            if (ImGui.Button($"{character.Name}"))
             {
-                ImGui.TableNextColumn();
-                if (ImGui.Button($"{character.Name}"))
-                {
-                    commandManager.ProcessCommand($"/autoretainer relog {character.Name}");
-                }
-
-                DrawRows<Overview>(character.Overview);
+                commandManager.ProcessCommand($"/autoretainer relog {character.Name}");
             }
 
-            DrawSummaryLine(characterContainers);
+            DrawRows<Overview>(character.Overview);
+        }
 
-            if (ImGui.TreeNode("Jobs"))
+        DrawSummaryLine(characterContainers);
+
+        if (ImGui.TreeNode("Jobs"))
+        {
+            DrawTableVertical(characterContainers);
+            int count = 0;
+            foreach (var p in characterContainers.First().JobContainer.Jobs)
             {
-                DrawTableVertical(characterContainers);
-                int count = 0;
-                foreach (var p in characterContainers.First().JobContainer.Jobs)
+                bool first=true;
+                foreach (var character in characterContainers)
                 {
-                    bool first=true;
-                    foreach (var character in characterContainers)
+                    var job = character.JobContainer.Jobs[count];
+
+                    if (first)
                     {
-                        var job = character.JobContainer.Jobs[count];
-
-                        if (first)
-                        {
-                            ImGui.TableNextColumn();
-                            ImGui.TextColored(job.Color, p.Name);
-                            first = false;
-                        }
-                        
                         ImGui.TableNextColumn();
-                        ImGui.TextColored(job.Color, job.Level.ToString());
+                        ImGui.TextColored(job.Color, p.Name);
+                        first = false;
                     }
-
-                    count++;
-                    ImGui.TableNextRow(); 
+                    
+                    ImGui.TableNextColumn();
+                    ImGui.TextColored(job.Color, job.Level.ToString());
                 }
-               
-                ImGui.EndTable();
-                ImGui.TreePop();
+
+                count++;
+                ImGui.TableNextRow(); 
             }
-            
+           
+            ImGui.EndTable();
             ImGui.TreePop();
         }
     }

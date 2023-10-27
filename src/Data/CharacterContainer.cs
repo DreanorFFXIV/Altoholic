@@ -14,6 +14,7 @@ public class CharacterContainer
     public Overview Overview { get; }
     public CollectionContainer Collection { get; private set; }
     public JobContainer JobContainer { get; private set; }
+    //ToDo: FCContainer > Gil/Credits/Level...
 
     [JsonConstructor]
     public CharacterContainer(string name, CurrencyController currency, Overview overview, CollectionContainer collection, JobContainer jobContainer)
@@ -30,7 +31,7 @@ public class CharacterContainer
     {
         Name = name;
         Currency = new CurrencyController();
-        Overview = new Overview { Gil = Currency.Common.Gil };
+        Overview = new Overview { Gil = Currency.Common.Gil, WeeklyCap = Currency.Battle.WeeklyCap};
 
         Reload(dataManager); 
     }
