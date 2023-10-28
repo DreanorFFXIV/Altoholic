@@ -88,9 +88,12 @@ public class MainWindow : Window, IDisposable
         }
         else
         {
-            var temp = new List<CharacterContainer> { CharacterContainers[selectedCharacterIndex] };
-            CurrencyWindow.Draw(temp);
-            CollectionWindow.Draw(temp);
+            if (selectedCharacterIndex >= 0)
+            {
+                var temp = new List<CharacterContainer> { CharacterContainers[selectedCharacterIndex] };
+                CurrencyWindow.Draw(temp);
+                CollectionWindow.Draw(temp);
+            }
         }
 
         ImGui.EndChild();
