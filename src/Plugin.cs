@@ -1,22 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Altoholic.Data;
 using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Altoholic.Windows;
-using Dalamud.Data;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Lumina.Excel.GeneratedSheets;
 
 namespace Altoholic
 {
+/*
+            ⠀⠀⠀⠀⣀⣤⣴⣶⣶⣾⣿⣷⣶⣶⣦⣄⡀⠀⠀⠀ 
+            ⠀⢠⣴⣿⣿⣿⣿⣿⣭⣭⣭⣭⣭⣿⣿⣿⣿⣧⣀⠀ 
+            ⢰⣿⣿⣿⣿⣿⣯⣿⡶⠶⠶⠶⠶⣶⣭⣽⣿⣿⣷⣆ 
+            ⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ 
+            ⠈⢿⣿⣿⡿⠋⠉⠁⠈⠉⠛⠉⠀⠀⠀⠈⠻⣿⡿⠃ 
+            ⠀⠀⠀⠉⠁⠀⢴⣐⢦⠀⠀⠀⣴⡖⣦⠀⠀⠈⠀⠀ 
+            ⠀⠀⠀⠀⠀⠀⠈⠛⠋⠀⠀⠀⠈⠛⠁⠀⠀⠀⠀⠀ 
+            ⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⣀⠀⠀⠀⢀⡀⠀⠀⠀⠀ 
+            ⠀⢀⡔⣻⣭⡇⠀⣼⣿⣿⣿⡇⠦⣬⣟⢓⡄⠀⠀ 
+            ⠀⠀⠀⠉⠁⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠉⠉⠀⠀⠀ 
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠻⠿⠿⠟⠁⠀⠀⠀⠀⠀⠀⠀ 
+            ⠀⠀⠀⠀⠀⠀⣠⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⡄⠀⠀⠀ 
+            ⠀⠀⣀⣤⣴⣾⣿⣷⣭⣭⣭⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀ 
+            ⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣸⣿⣿⣧⠀⠀ 
+            ⠀⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢻⣿⣿⡄⠀ 
+            ⠀⢸⣿⣮⣿⣿⣿⣿⣿⣿⣿⡟⢹⣿⣿⣿⡟⢛⢻⣷⢻⣿⣧⠀ 
+            ⠀⠀⣿⡏⣿⡟⡛⢻⣿⣿⣿⣿⠸⣿⣿⣿⣷⣬⣼⣿⢸⣿⣿⠀
+*/
+    
     public sealed class Plugin : IDalamudPlugin
     {
         public string Name => "Altoholic";
@@ -49,9 +64,12 @@ namespace Altoholic
                 HelpMessage = "Opens the Altoholic View"
             });
             
-            MainWindow = new MainWindow(commandManager);
+            MainWindow = new MainWindow(commandManager, $"Altoholic {Assembly.GetExecutingAssembly().GetName().Version?.ToString()}");
             WindowSystem.AddWindow(MainWindow);
 
+            clientState.Login += RefreshData;
+            clientState.Logout += RefreshData;
+            
             PluginInterface.UiBuilder.Draw += DrawUI;
         }
 
@@ -67,10 +85,15 @@ namespace Altoholic
 
         private void OnCommand(string command, string args)
         {
-            MainWindow.CharacterContainers = LoadData();
+            RefreshData();
             MainWindow.IsOpen = true;
         }
- 
+
+        private void RefreshData()
+        {
+            MainWindow.CharacterContainers = LoadData();
+        }
+
         private void DrawUI()
         {
             WindowSystem.Draw();
@@ -81,17 +104,15 @@ namespace Altoholic
             var characterContainers = Configuration.CharacterContainers ?? new List<CharacterContainer>(); //null on new install
             if (ClientState.LocalPlayer != null)
             {
-                var loggedCharacter = $"{ClientState.LocalPlayer.Name.ToString()}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
+                var loggedCharacter = $"{ClientState.LocalPlayer.Name}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
                 var existingCharacter = characterContainers.FirstOrDefault(x => x.Name == loggedCharacter);
                 if (existingCharacter != null)
                 {
-                    PluginLog.Log("Exist: " + existingCharacter.Name);
                     existingCharacter.Reload(Dm); 
                 }
                 else 
                 {  
-                    PluginLog.Log("Add:"+ loggedCharacter);
                     characterContainers.Add(new CharacterContainer(loggedCharacter, Dm));
                 }
             }

@@ -12,18 +12,18 @@ namespace Altoholic
         public int Version { get; set; } = 3;
 
         [NonSerialized]
-        private DalamudPluginInterface? PluginInterface;
+        private DalamudPluginInterface? _pluginInterface;
 
         public List<CharacterContainer> CharacterContainers { get; set; }
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            PluginInterface = pluginInterface;
+            _pluginInterface = pluginInterface;
         }
 
         public void Save()
         { 
-            PluginInterface!.SavePluginConfig(this);
+            _pluginInterface!.SavePluginConfig(this);
         }
     }
 }

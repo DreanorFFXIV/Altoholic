@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Altoholic.Data;
 using ImGuiNET;
@@ -79,10 +78,17 @@ public abstract class BaseWindow
         }
     }
 
-    protected static void DrawTableVertical(List<CharacterContainer> characterContainers)
+    protected static void DrawTableVertical(List<CharacterContainer> characterContainers, bool enableHorizontalScrolling = false)
     {
         int size = characterContainers.Count + 1;
-        if (ImGui.BeginTable("table", size, ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.BordersInner))
+
+        var flags = ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.BordersInner;
+        if (enableHorizontalScrolling)
+        {
+            flags |= ImGuiTableFlags.ScrollX;
+        }
+        
+        if (ImGui.BeginTable("table", size, flags))
         {
             ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed);
 

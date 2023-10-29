@@ -14,27 +14,32 @@ public class CollectionWindow : BaseWindow
         {
             if (ImGui.TreeNode("Mounts"))
             {
-                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), nameof(CharacterContainer.Collection.UnlockedMounts));
+                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), 
+                    nameof(CharacterContainer.Collection.UnlockedMounts));
             }
             
             if (ImGui.TreeNode("Minons"))
             {
-                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), nameof(CharacterContainer.Collection.UnlockedMinions));
+                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), 
+                    nameof(CharacterContainer.Collection.UnlockedMinions));
             }
             
             if (ImGui.TreeNode("Emotes"))
             {
-                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), nameof(CharacterContainer.Collection.UnlockedEmotes));
+                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), 
+                    nameof(CharacterContainer.Collection.UnlockedEmotes));
             }
             
             if (ImGui.TreeNode("Triple Triad Cards"))
             {
-                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), nameof(CharacterContainer.Collection.UnlockedTriadCards));
+                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), 
+                    nameof(CharacterContainer.Collection.UnlockedTriadCards));
             }
             
             if (ImGui.TreeNode("Orchestrion Rolls"))
             {
-                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), nameof(CharacterContainer.Collection.UnlockedOrechestrion));
+                DrawCollection(characterContainers, nameof(CharacterContainer.Collection), 
+                    nameof(CharacterContainer.Collection.UnlockedOrechestrion));
             }
             
             ImGui.TreePop();

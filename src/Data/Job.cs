@@ -1,23 +1,21 @@
-﻿using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
+﻿using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Common.Math;
+using Newtonsoft.Json;
 
 namespace Altoholic.Data;
 
 public class Job
 {
-    public string Name { get; } = string.Empty;
+    public string Name { get; }
     
     public short Level { get; }
+    
+    [JsonIgnore]
+    public int Sort { get; set; }
 
-    public Vector4 Color { get; } = new Vector4(0,0,0,0);
-    
-    public int Sort { get; }
-    
-    public Job(string name, short level, Vector4 color, int sort)
+    public Job(string name, short level)
     {
         Name = name;
         Level = level;
-        Color = color;
-        Sort = sort;
     }
 }

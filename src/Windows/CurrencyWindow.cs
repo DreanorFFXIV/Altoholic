@@ -5,7 +5,7 @@ using ImGuiNET;
 
 namespace Altoholic.Windows;
 
-public class CurrencyWindow : BaseWindow
+public abstract class CurrencyWindow : BaseWindow
 {
     public static void Draw(List<CharacterContainer> characterContainers)
     {

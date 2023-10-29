@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Altoholic.Data;
-using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using ImGuiNET;
@@ -12,14 +11,14 @@ namespace Altoholic.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    private bool overViewIsSelected;
-    private int selectedCharacterIndex = -1;
-    private ICommandManager _commandManager;
+    private bool _overViewIsSelected;
+    private string _selectedCharacter;
+    private readonly ICommandManager _commandManager;
 
     public List<CharacterContainer> CharacterContainers { get; set; }
 
-    public MainWindow(ICommandManager commandManager)
-        : base("Altoholic", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+    public MainWindow(ICommandManager commandManager, string name)
+        : base(name, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         _commandManager = commandManager;
         SizeConstraints = new WindowSizeConstraints
@@ -35,67 +34,65 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        DrawSelection();
-        DrawContent();
+        ImGui.BeginChild("LeftChild", new Vector2(200, 0), true);
+        {
+            if (ImGui.Selectable("Overview", _overViewIsSelected))
+            {
+                _overViewIsSelected = true;
+                _selectedCharacter = string.Empty;
+            }
+
+            DrawCharacterSelection();
+
+            ImGui.EndChild();
+        }
+        
+        ImGui.SameLine();
+        
+        ImGui.BeginChild("RightChild", new Vector2(0, 0), true);
+        {
+            if (_overViewIsSelected)
+            {
+                OverviewWindow.Draw(CharacterContainers, _commandManager);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(_selectedCharacter))
+                {
+                    var temp = new List<CharacterContainer> { CharacterContainers.First(x => x.Name == _selectedCharacter) };
+                    CurrencyWindow.Draw(temp);
+                    CollectionWindow.Draw(temp);
+                }
+            }
+
+            ImGui.EndChild();
+        }
     }
 
-    private void DrawSelection()
+    private void DrawCharacterSelection()
     {
-        ImGui.BeginChild("LeftChild", new Vector2(200, 0), true);
-
-        if (ImGui.Selectable("Overview", overViewIsSelected))
-        {
-            overViewIsSelected = true;
-            selectedCharacterIndex = -1;
-        }
-
         ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Text("Characters");
         ImGui.Separator();
-
-        var index = 0;
-        foreach (var character in CharacterContainers.GroupBy(x => x.Name.Remove(0, x.Name.IndexOf("@") + 1)))
+        
+        foreach (var character in CharacterContainers
+                     .GroupBy(x => x.Name.Remove(0, x.Name.IndexOf("@") + 1))
+                     .OrderBy(x => x.Key))
         {
             if (!ImGui.TreeNode(character.Key)) continue;
-            foreach (var currentChar in character)
+            foreach (var currentChar in character.OrderBy(x => x.Name))
             {
-                var isSelected = index == selectedCharacterIndex;
-
-                if (ImGui.Selectable(currentChar.Name, isSelected))
+                if (ImGui.Selectable(currentChar.Name, !string.IsNullOrEmpty(_selectedCharacter) && _selectedCharacter == currentChar.Name))
                 {
-                    overViewIsSelected = false;
-                    selectedCharacterIndex = index;
+                    _overViewIsSelected = false;
+                    _selectedCharacter = currentChar.Name;
                 }
-
-                index++;
             }
 
             ImGui.TreePop();
         }
-
-        ImGui.EndChild();
-    }
-
-    private void DrawContent()
-    {
-        ImGui.SameLine();
-        ImGui.BeginChild("RightChild", new Vector2(0, 0), true);
-
-        if (overViewIsSelected)
-        {
-            OverviewWindow.Draw(CharacterContainers, _commandManager);
-        }
-        else
-        {
-            if (selectedCharacterIndex >= 0)
-            {
-                var temp = new List<CharacterContainer> { CharacterContainers[selectedCharacterIndex] };
-                CurrencyWindow.Draw(temp);
-                CollectionWindow.Draw(temp);
-            }
-        }
-
-        ImGui.EndChild();
+        
+        ImGui.Separator();
     }
 }
